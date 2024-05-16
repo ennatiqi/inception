@@ -8,20 +8,19 @@ RUN useradd -r -d /var/lib/nginx -s /sbin/nologin -U nginx
 
 
 
-# COPY ./tools/nginx.conf /etc/nginx/nginx.conf
-
-
 # COPY ./app/index.html /home/rennatiq/project/srcs/requirements/nginx/app/index.html
 
-# RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx-selfsigned.key -out nginx-selfsigned.crt
+
+RUN mkdir /etc/nginx/ssl
+RUN chmod 700 /etc/nginx/ssl
+
+RUN openssl genrsa -out /etc/nginx/ssl/nginx.key 2048 \
+    && openssl req -x509 -key /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -days 365 -subj "/C=Mo/L=Tetouan/O=1337MED/UID=123456+CN=nginx" 
 
 
-# COPY nginx-selfsigned.crt /etc/nginx/ssl/nginx-selfsigned.crt
-# COPY nginx-selfsigned.key /etc/nginx/ssl/nginx-selfsigned.key
-
-# COPY /etc/ssl/certs/nginx-selfsigned.crt ./tools
-# COPY /etc/ssl/private/nginx-selfsigned.key ./tools
-
-EXPOSE 8080
+COPY ./requirements/nginx/tools/nginx.conf /etc/nginx/conf.d/nginx.conf
+# conf.d
+#/etc/nginx/nginx.conf
+EXPOSE 443
 
 CMD ["nginx" , "-g" , "daemon off;"]
