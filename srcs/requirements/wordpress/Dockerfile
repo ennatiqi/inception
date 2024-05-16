@@ -1,30 +1,31 @@
-FROM debian:latest
+FROM debian:12
 
-RUN apt-get update
-
-RUN apt-get install -y php8.2 php8.2-fpm php8.2-mysql wget apache2 mariadb-server
-
-
-RUN find /etc/php/ -name www.conf -exec sed -i 's|^listen = 127.0.0.1:9000|listen = 9000|' {} \;
+RUN apt-get update  && apt-get -y upgrade
+RUN apt-get -y install curl php-fpm php-mysql wget mariadb-server
 
 
+RUN find /etc/php/ -name www.conf -exec sed -i 's|^listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|' {} \;
 
-RUN cd /var/www/html && wget https://wordpress.org/latest.tar.gz
-RUN tar -xzvf /var/www/html/latest.tar.gz && rm /var/www/html/latest.tar.gz
+WORKDIR /var/www
 
-RUN chown -R www-data:www-data wordpress/
+RUN wget https://wordpress.org/latest.tar.gz
+RUN tar -xzvf latest.tar.gz && rm latest.tar.gz
 
-RUN cd wordpress/
-
-# RUN mv wp-config-sample.php wp-config.php
-
-
-RUN find . -type d -exec chmod 755 {} \;
-
-RUN find . -type f -exec chmod 644 {} \;
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod +x wp-cli.phar
+RUN mv wp-cli.phar /usr/local/bin/wp
 
 
+
+COPY ./requirements/wordpress/wordpress.sh .
+
+RUN chmod +x wordpress.sh
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm8", "-F"]
+RUN ./wordpress.sh
+
+# ENTRYPOINT ["bash", "/var/www/wordpress.sh"]
+
+# CMD ["/usr/sbin/php-fpm", "-F"]
+CMD tail -f
