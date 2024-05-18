@@ -9,11 +9,13 @@ services:
       dockerfile: /home/rennatiq/project/srcs/requirements/mariadb/Dockerfile
     expose: 
       - 3306
-    environment:
-      MYSQL_DATABASE: "${MYSQL_DATABASE}"
-      MYSQL_USER: "${MYSQL_USER}"
-      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    env_file:
+      - .env
+    # environment:
+    #   MYSQL_DATABASE: "${MYSQL_DATABASE}"
+    #   MYSQL_USER: "${MYSQL_USER}"
+    #   MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    #   MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     restart: always
     volumes:
       - mariadb:/var/lib/mysql
@@ -31,11 +33,22 @@ services:
       - 9000
     volumes:
       - wordpress:/var/www
-    environment:
-      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
-      WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
-      WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
-      WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
+    env_file:
+      - .env
+    # environment:
+    #   MYSQL_DATABASE: "${MYSQL_DATABASE}"
+    #   MYSQL_USER: "${MYSQL_USER}"
+    #   MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    #   MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    #   WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
+    #   WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
+    #   WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
+    #   WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
+    #   MARIADB_ADMIN_USER : "${MARIADB_ADMIN_USER}"
+    #   MARIADB_ADMIN_PWD : "${MARIADB_ADMIN_PWD}"
+    #   MARIADB_USER : "${MARIADB_USER}"
+    #   MARIADB_PWD : "${MARIADB_PWD}"
+
     networks:
       - net
   nginx:
@@ -57,14 +70,14 @@ volumes:
   wordpress:
     driver: local
     driver_opts:
-      device: /home/rennatiq/data
+      device: /home/rennatiq/data/wordpress
       type: "none"
       o: bind
 
   mariadb:
     driver: local
     driver_opts:
-      device: /home/rennatiq/data
+      device: /home/rennatiq/data/mariadb
       type: "none"
       o: bind
 

@@ -1,4 +1,4 @@
-FROM debian:12
+FROM debian:12.2
 
 RUN apt-get update  && apt-get -y upgrade
 RUN apt-get -y install curl php-fpm php-mysql wget mariadb-server
@@ -17,15 +17,15 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 
 
 
-COPY ./requirements/wordpress/wordpress.sh .
+COPY ./requirements/wordpress/tools/wordpress.sh .
 
 RUN chmod +x wordpress.sh
 
-EXPOSE 9000
+    EXPOSE 9000
 
-RUN ./wordpress.sh
+# RUN ./wordpress.sh
 
-# ENTRYPOINT ["bash", "/var/www/wordpress.sh"]
+ENTRYPOINT ["bash","./wordpress.sh"]
 
-# CMD ["/usr/sbin/php-fpm", "-F"]
-CMD tail -f
+# CMD ["php-fpm8.2", "-F"]
+# CMD tail -f
