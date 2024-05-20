@@ -1,10 +1,10 @@
 FROM debian:12.2
 
 RUN apt-get update  && apt-get -y upgrade
-RUN apt-get -y install curl php-fpm php-mysql wget mariadb-server
+RUN apt-get -y install curl php-fpm php-mysql wget
 
 
-RUN find /etc/php/ -name www.conf -exec sed -i 's|^listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|' {} \;
+RUN find /etc/php/ -name www.conf -exec sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 0.0.0.0:9000|' {} \;
 
 WORKDIR /var/www
 
@@ -21,7 +21,7 @@ COPY ./requirements/wordpress/tools/wordpress.sh .
 
 RUN chmod +x wordpress.sh
 
-    EXPOSE 9000
+EXPOSE 9000
 
 # RUN ./wordpress.sh
 
