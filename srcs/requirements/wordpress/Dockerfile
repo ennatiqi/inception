@@ -1,10 +1,10 @@
-FROM debian:12.2
+FROM debian:bookworm
 
 RUN apt-get update  && apt-get -y upgrade
 RUN apt-get -y install curl php-fpm php-mysql wget
 
 
-RUN find /etc/php/ -name www.conf -exec sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 0.0.0.0:9000|' {} \;
+RUN  sed -i 's/listen = \/run\/php\/php8.2-fpm.sock/listen = 0.0.0.0:9000/' /etc/php/8.2/fpm/pool.d/www.conf
 
 WORKDIR /var/www
 
@@ -23,9 +23,4 @@ RUN chmod +x wordpress.sh
 
 EXPOSE 9000
 
-# RUN ./wordpress.sh
-
-ENTRYPOINT ["bash","./wordpress.sh"]
-
-# CMD ["php-fpm8.2", "-F"]
-# CMD tail -f
+CMD [ "./wordpress.sh" ]

@@ -2,8 +2,8 @@
 services: 
 
   mariadb:
-    # image: mariadb:10
     container_name: mariadb
+    image: mariadb:42
     build: 
       context: .
       dockerfile: /home/rennatiq/project/srcs/requirements/mariadb/Dockerfile
@@ -11,19 +11,14 @@ services:
       - 3306
     env_file:
       - .env
-    # environment:
-    #   MYSQL_DATABASE: "${MYSQL_DATABASE}"
-    #   MYSQL_USER: "${MYSQL_USER}"
-    #   MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
-    #   MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     restart: always
     volumes:
       - mariadb:/var/lib/mysql
     networks:
       - net
   wordpress:
-    # image: wordpress:5-fpm-alpine
     container_name: wordpress
+    image: wordpress:42
     build: 
       context: .
       dockerfile: /home/rennatiq/project/srcs/requirements/wordpress/Dockerfile
@@ -35,24 +30,12 @@ services:
       - wordpress:/var/www
     env_file:
       - .env
-    # environment:
-    #   MYSQL_DATABASE: "${MYSQL_DATABASE}"
-    #   MYSQL_USER: "${MYSQL_USER}"
-    #   MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
-    #   MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-    #   WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
-    #   WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
-    #   WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
-    #   WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
-    #   MARIADB_ADMIN_USER : "${MARIADB_ADMIN_USER}"
-    #   MARIADB_ADMIN_PWD : "${MARIADB_ADMIN_PWD}"
-    #   MARIADB_USER : "${MARIADB_USER}"
-    #   MARIADB_PWD : "${MARIADB_PWD}"
 
     networks:
       - net
   nginx:
     container_name: nginx
+    image: nginx:42
     build: 
       context: .
       dockerfile: /home/rennatiq/project/srcs/requirements/nginx/Dockerfile

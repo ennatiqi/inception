@@ -1,4 +1,4 @@
-FROM debian:12.2
+FROM debian:bookworm
 
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get install -y mariadb-server mariadb-client
@@ -13,8 +13,6 @@ COPY ./requirements/mariadb/tools/database.sh .
 
 RUN chmod +x database.sh
 
-ENTRYPOINT ["sh", "./database.sh"]
-
 EXPOSE 3306
 
-CMD ["mysqld", "--user=mysql", "--console"]
+CMD ["./database.sh"]
