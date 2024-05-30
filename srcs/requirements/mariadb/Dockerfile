@@ -9,7 +9,7 @@ RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
 RUN sed -i 's/127.0.0.1/0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf 
 
-COPY ./requirements/mariadb/tools/database.sh .
+COPY ./tools/database.sh .
 
 RUN chmod +x database.sh
 

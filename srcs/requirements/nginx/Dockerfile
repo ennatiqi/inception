@@ -12,7 +12,7 @@ RUN chmod 700 /etc/nginx/ssl
 RUN openssl genrsa -out /etc/nginx/ssl/nginx.key 2048 \
     && openssl req -x509 -key /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -days 365 -subj "/C=Mo/L=Tetouan/O=1337MED" 
 
-COPY ./requirements/nginx/tools/nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY ./tools/nginx.conf /etc/nginx/conf.d/nginx.conf
 
 EXPOSE 443
 

@@ -1,12 +1,9 @@
 
-services: 
-
+services:
   mariadb:
     container_name: mariadb
-    image: mariadb:42
-    build: 
-      context: .
-      dockerfile: /home/rennatiq/project/srcs/requirements/mariadb/Dockerfile
+    image: mariadb
+    build: ./requirements/mariadb
     expose: 
       - 3306
     env_file:
@@ -16,12 +13,11 @@ services:
       - mariadb:/var/lib/mysql
     networks:
       - net
+
   wordpress:
     container_name: wordpress
-    image: wordpress:42
-    build: 
-      context: .
-      dockerfile: /home/rennatiq/project/srcs/requirements/wordpress/Dockerfile
+    image: wordpress
+    build: ./requirements/wordpress
     depends_on:
       - mariadb
     expose: 
@@ -30,15 +26,13 @@ services:
       - wordpress:/var/www
     env_file:
       - .env
-
     networks:
       - net
+
   nginx:
     container_name: nginx
-    image: nginx:42
-    build: 
-      context: .
-      dockerfile: /home/rennatiq/project/srcs/requirements/nginx/Dockerfile
+    image: nginx
+    build: ./requirements/nginx
     depends_on: 
       - wordpress
     ports:

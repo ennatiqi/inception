@@ -1,28 +1,18 @@
-name = inception
-
 all:
 	@/home/rennatiq/project/srcs/requirements/tools/mkdir.sh
-	@docker compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d  --build
+	@docker compose -f ./srcs/docker-compose.yml up -d  --build
+
+down :
+	@docker compose -f ./srcs/docker-compose.yml down
 
 
-re:
-	@docker compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
-	@/home/rennatiq/project/srcs/requirements/tools/mkdir.sh
-	@docker compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
-
-clean:
-	@docker compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
-	@docker system prune -a
+clean: down
 	@sudo rm -rf ~/data/wordpress
 	@sudo rm -rf ~/data/mariadb
 
-fclean:
-	@docker compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
-	@docker stop $(docker ps -q) || true
-	@docker system prune --all --force --volumes
-	@docker network prune --force
-	@docker volume prune --force
-	@sudo rm -rf ~/data/wordpress
-	@sudo rm -rf ~/data/mariadb
+re: down all
+
+fclean: clean
+	@docker system prune -af
 
 .PHONY	: all re clean fclean

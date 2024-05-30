@@ -17,7 +17,7 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 
 
 
-COPY ./requirements/wordpress/tools/wordpress.sh .
+COPY ./tools/wordpress.sh .
 
 RUN chmod +x wordpress.sh
 
